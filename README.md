@@ -1,5 +1,8 @@
 giftwrap
 ========
+
+[![Build Status](https://drone-test.openstack.blueboxgrid.com/api/badge/github.com/blueboxgroup/giftwrap/status.svg?branch=master)](https://drone-test.openstack.blueboxgrid.com/github.com/blueboxgroup/giftwrap)
+
 A tool for creating bespoke system-native OpenStack artifacts.
 
 Anyone running OpenStack at scale typically crafts their own software distribution mechanism. There may be many reasons for this, but chief among them seem to be the desire to ship security patches, deliver custom code, lock their releases at a revision of their choosing, or just generally stay closer to trunk.
