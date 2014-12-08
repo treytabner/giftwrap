@@ -3,10 +3,13 @@ notify:
   slack:
     webhook_url: "{{ slack_url }}"
     username: devop
-    channel: openstack
+    channel: "os-noise"
     on_started: true
     on_success: true
     on_failure: true
+  email:
+    recipients:
+      - pczarkowski@bluebox.net
 script:
   - pip install tox
   - tox
