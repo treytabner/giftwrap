@@ -1,11 +1,11 @@
 # encoding: UTF-8
 
-GIFTWRAP_MANIFEST = ENV['GIFTWRAP_MANIFEST'] || 'examples/manifest.yml'
+GIFTWRAP_MANIFEST_ENV = ENV['GIFTWRAP_MANIFEST'] || 'examples/manifest.yml'
+GIFTWRAP_MANIFEST = File.expand_path(GIFTWRAP_MANIFEST_ENV)
 GIFTWRAP_ARGS = ENV['GIFTWRAP_ARGS'] || '-t package'
 GIFTWRAP_BUILDBOX_NAME = ENV['GIFTWRAP_BUILDBOX_NAME'] || 'ursula-precise'
 GIFTWRAP_BUILDBOX_URL = ENV['GIFTWRAP_BUILDBOX_URL'] || 'http://apt.openstack.blueboxgrid.com/vagrant/ursula-precise.box'
 GIFTWRAP_POSTBUILD_SCRIPT = ENV['GIFTWRAP_POSTBUILD_SCRIPT'] || ""
-<<<<<<< HEAD
 
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 
@@ -19,7 +19,7 @@ Vagrant.configure('2') do |config|
     os.password              = ENV['OS_PASSWORD']
     os.tenant_name           = ENV['OS_TENANT_NAME']
     os.openstack_network_url = ENV['OS_NEUTRON_URL']
-    
+
     os.flavor                = ENV['GIFTWRAP_OS_FLAVOR'] || 'm1.small'
     os.image                 = ENV['GIFTWRAP_OS_IMAGE'] || 'ubuntu-12.04'
 
@@ -28,7 +28,7 @@ Vagrant.configure('2') do |config|
     else
         os.networks          = ['internal']
     end
-    
+
     override.ssh.username = ENV['GIFTWRAP_OS_USERNAME'] || 'ubuntu'
     if ENV['GIFTWRAP_OS_FLOATING_IP_POOL']
         os.floating_ip_pool  = ENV['GIFTWRAP_OS_FLOATING_IP_POOL']
@@ -40,10 +40,13 @@ Vagrant.configure('2') do |config|
     os.rsync_cvs_exclude     = false
   end
 
+  config.vm.synced_folder ".", "/vagrant"
+  config.vm.synced_folder File.dirname(GIFTWRAP_MANIFEST), File.dirname(GIFTWRAP_MANIFEST)
+
   config.vm.provision 'shell', inline: <<-EOF
     #!/bin/bash
     set -x
-    set -e 
+    set -e
     if [ -f /etc/lsb-release ]; then
         . /etc/lsb-release
         OS=$DISTRIB_ID
